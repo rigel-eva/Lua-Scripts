@@ -12,7 +12,7 @@ function node_recovery(waitTime)
 	--Parameters: waitTime - number of ticks until any lost Vis is considered lost.
 	tickCount=0--God Damnit we start our indexces at ZERO!
 	currentMax=node_aspects.getAspectsSum()
-	while tickCount<waitTime and not node == nill do--Check If there still is a node, and that we haven't surpassed our waitTime
+	while tickCount<waitTime and not node == nil do--Check If there still is a node, and that we haven't surpassed our waitTime
 		local i=1
 		while node_aspects[i] not nil do
 			local aspectCount=node.getAspectsSum(node_aspects[i])
@@ -20,7 +20,7 @@ function node_recovery(waitTime)
 				--remove the aspect
 				i=i-1--keep i as it was
 			else if (node.getAspectsSum(node_aspects[i])>currentMax[firstToUpper(node_aspects[i])]) then
-				tickCount= -1;--Oh the node regenerated some Vis, Cool! let's reset the cooldown to -1(moves to zero)
+				tickCount= -1;--Oh the node regenerated some Vis, Cool! let's reset the cooldown to -1(moves to zero after adding one)
 			end
 			i=i+1--Alright let's advance i by one.
 		end
@@ -30,6 +30,7 @@ function node_recovery(waitTime)
 		redstone.setOutput(redstone_side,false)--This is so the stabalizer on the bully node gets triggered once we finish the program.
 		exit() --If there are no more node aspects, then we have done our job to the fullest extent.
 	end
+  node=peripheral.wrap("top")
 end
 while(not redstone.getInput(redstone_input) or not node == nil) do --As long as we don't recieve a button press, or the block we are checking for isn't nil ...
 	node_aspects=node.getAspects()--get a list of the aspects
